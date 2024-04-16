@@ -71,7 +71,7 @@ void ASPlayerCharacter::Zoom(const FInputActionValue& InputValue)
 		(
 			cameraBoom->TargetArmLength + (Zoom * 25.0f),
 			500,	// Min Target Distance
-			1500	// Max Target Distance
+			1000	// Max Target Distance
 		);
 	}
 }
