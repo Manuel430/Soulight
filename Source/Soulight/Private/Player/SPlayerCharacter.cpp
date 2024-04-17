@@ -15,13 +15,21 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
+#include "Components/SceneCaptureComponent2D.h"
+
 ASPlayerCharacter::ASPlayerCharacter()
 {
 	cameraBoom = CreateDefaultSubobject<USpringArmComponent>("Camera Boom");
 	viewCamera = CreateDefaultSubobject<UCameraComponent>("View Camera");
 
+	MiniMapSpringArm = CreateDefaultSubobject<USpringArmComponent>("Mini Map Spring Arm");
+	MiniMapCapture = CreateDefaultSubobject<USceneCaptureComponent2D>("Mini Map Camera");
+
 	cameraBoom->SetupAttachment(GetRootComponent());
 	viewCamera->SetupAttachment(cameraBoom, USpringArmComponent::SocketName);
+
+	MiniMapSpringArm->SetupAttachment(GetRootComponent());
+	MiniMapCapture->SetupAttachment(MiniMapSpringArm, USpringArmComponent::SocketName);
 
 	bUseControllerRotationYaw = false;
 
