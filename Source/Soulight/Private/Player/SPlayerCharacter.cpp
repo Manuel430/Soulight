@@ -69,16 +69,22 @@ void ASPlayerCharacter::Zoom(const FInputActionValue& InputValue)
 	{
 		cameraBoom->TargetArmLength = FMath::Clamp
 		(
-			cameraBoom->TargetArmLength + (Zoom * 25.0f),
-			500,	// Min Target Distance
-			1000	// Max Target Distance
+			cameraBoom->TargetArmLength + (Zoom * 100.0f),
+			7000,	// Min Target Distance
+			10000	// Max Target Distance
 		);
 	}
 }
 
 void ASPlayerCharacter::Look(const FInputActionValue& InputValue)
 {
+	float Input = InputValue.Get<float>();
 
+	FRotator CurrentLocalRotation = cameraBoom->GetRelativeRotation();
+
+	FRotator TargetLocalRotation = CurrentLocalRotation + FRotator(0, 90 * Input, 0);
+
+	cameraBoom->SetRelativeRotation(TargetLocalRotation);
 }
 
 void ASPlayerCharacter::StartRunning()
