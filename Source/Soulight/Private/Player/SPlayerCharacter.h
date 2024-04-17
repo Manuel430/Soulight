@@ -10,7 +10,6 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
-class USceneCaptureComponent2D;
 /**
  * 
  */
@@ -28,13 +27,6 @@ private:
 		USpringArmComponent* cameraBoom;
 	UPROPERTY(visibleAnywhere, Category = "View")
 		UCameraComponent* viewCamera;
-
-	UPROPERTY(visibleAnywhere, Category = "MiniMap")
-		USpringArmComponent* MiniMapSpringArm;
-
-	UPROPERTY(visibleAnywhere, Category = "MiniMap")
-		USceneCaptureComponent2D* MiniMapCapture;
-
 
 /*****************************************************/
 /*                       Input                       */
