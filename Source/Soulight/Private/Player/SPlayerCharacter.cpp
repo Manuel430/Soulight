@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
+#include "GameFramework/Controller.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -54,7 +55,8 @@ void ASPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (enhancedInputComp)
 	{
 		enhancedInputComp->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Move);
-		enhancedInputComp->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Look);
+		enhancedInputComp->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Aim);
+		enhancedInputComp->BindAction(LookInputAction, ETriggerEvent::Completed, this, &ASPlayerCharacter::AimComplete);
 		enhancedInputComp->BindAction(ZoomInputAction, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Zoom);
 		enhancedInputComp->BindAction(RunInputAction, ETriggerEvent::Started, this, &ASPlayerCharacter::StartRunning);
 		enhancedInputComp->BindAction(RunInputAction, ETriggerEvent::Completed, this, &ASPlayerCharacter::StoppedRunning);
@@ -84,15 +86,22 @@ void ASPlayerCharacter::Zoom(const FInputActionValue& InputValue)
 	}
 }
 
-void ASPlayerCharacter::Look(const FInputActionValue& InputValue)
+void ASPlayerCharacter::Aim(const FInputActionValue& InputValue)
 {
-	float Input = InputValue.Get<float>();
+	FVector2D Input = InputValue.Get<FVector2D>();
 
-	FRotator CurrentLocalRotation = cameraBoom->GetRelativeRotation();
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 
-	FRotator TargetLocalRotation = CurrentLocalRotation + FRotator(0, 90 * Input, 0);
+	Input.Normalize();
+	FRotator NewRotation = FRotator(0.f, FMath::RadiansToDegrees(FMath::Atan2(Input.Y, Input.X)) * Sensitivity, 0.f);
 
-	cameraBoom->SetRelativeRotation(TargetLocalRotation);
+	SetActorRotation(NewRotation);
+
+}
+
+void ASPlayerCharacter::AimComplete()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 void ASPlayerCharacter::StartRunning()

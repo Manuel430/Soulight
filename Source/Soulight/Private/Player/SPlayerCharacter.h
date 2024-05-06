@@ -56,13 +56,16 @@ private:
 	UFUNCTION()
 		void Zoom(const FInputActionValue& InputValue);
 	UFUNCTION()
-		void Look(const FInputActionValue& InputValue);
+		void Aim(const FInputActionValue& InputValue);
+	UFUNCTION()
+		void AimComplete();
 	UFUNCTION()
 		void StartRunning();
 	UFUNCTION()
 		void StoppedRunning();
 
-
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	float Sensitivity = 1.f;
 	FVector GetMoveFwdDir() const;
 	FVector GetMoveRightDir() const;
 
